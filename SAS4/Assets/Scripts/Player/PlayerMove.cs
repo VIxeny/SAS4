@@ -1,30 +1,22 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
-public class PlayerMove : MonoBehaviour
+namespace Player
 {
-    [SerializeField] private Rigidbody2D rb;
-    private Vector2 _direction;
-    [SerializeField] [Range(1, 10)] private float movingSpeed = 5f;
-
-    private void OnValidate()
+    public class PlayerMove : MonoBehaviour
     {
-        rb ??= GetComponent<Rigidbody2D>();
-    }
+        public PlayerMain playerMain;
+        [SerializeField] private Rigidbody2D rb;
+        [SerializeField] [Range(1, 10)] private float movingSpeed = 5f;
 
-    private void Update()
-    {
-        Move();
-    }
+        private void Update()
+        {
+            Move();
+        }
 
-    private void Move()
-    {
-        rb.velocity = _direction * movingSpeed;
-    }
-
-    public void GetMove(InputAction.CallbackContext context)
-    {
-        _direction = context.ReadValue<Vector2>();
+        private void Move()
+        {
+            Vector2 moveDirection = playerMain.playerInputScript.MoveDirection;
+            rb.velocity =  moveDirection * movingSpeed;
+        }
     }
 }
